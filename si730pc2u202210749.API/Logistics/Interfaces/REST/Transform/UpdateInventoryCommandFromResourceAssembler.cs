@@ -5,9 +5,9 @@ namespace si730pc2u202210749.API.Logistics.Interfaces.REST.Transform;
 
 public static class UpdateInventoryCommandFromResourceAssembler
 {
-    public static UpdateInventoryCommand ToCommandFromResource(UpdateInventoryResource resource)
+    public static UpdateInventoryCommand ToCommandFromResource(int inventoryId, UpdateInventoryResource resource)
     {
-        return new UpdateInventoryCommand(resource.Id, resource.ProductId, resource.WarehouseId, resource.MinimumStock, resource.CurrentStock);
+        return new UpdateInventoryCommand(inventoryId, resource.ProductId, resource.WarehouseId, resource.MinimumStock, resource.CurrentStock);
     }
     
 }

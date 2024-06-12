@@ -62,16 +62,19 @@ public class InventoriesController(IInventoryQueryService inventoryQueryService,
         return CreatedAtAction(nameof(GetInventoryById), new { inventoryId = inventoryResource.Id }, inventoryResource);
     }
     
-    [HttpPut]
+    [HttpPut("{inventoryId:int}")]
     [SwaggerOperation(
         Summary = "Update a inventory.",
-        Description = "Updates a inventory.",
-        OperationId = "UpdateInventory",
+        Description = "Updates a inventory by its identifier.",
+        OperationId = "UpdateInventoryById",
         Tags = new[] { "Inventories" }
     )]
-    public async Task<IActionResult> UpdateInventory(UpdateInventoryResource resource)
+    public async Task<IActionResult> UpdateInventory(int inventoryId, UpdateInventoryResource resource)
     {
-        var updateInventoryCommand = UpdateInventoryCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var existingInventory = await inventoryQueryService.Handle(new GetInventoryByIdQuery(inventoryId));
+        if (existingInventory is null) return NotFound();
+        
+        var updateInventoryCommand = UpdateInventoryCommandFromResourceAssembler.ToCommandFromResource(inventoryId, resource);
         var inventory = await inventoryCommandService.Handle(updateInventoryCommand);
         if (inventory is null) return NotFound();
         var inventoryResource = InventoryResourceFromEntityAssembler.ToResourceFromEntity(inventory);
