@@ -12,6 +12,7 @@ public partial class Inventory
         WarehouseId = new InvWarehouseId(0);
         MinimumStock = new InvMinimumStock();
         CurrentStock = new InvCurrentStock();
+        Status = InvStatus.LimitedStock;
     }
     //Constructor por parametros
     public Inventory(int productId, int warehouseId, int minimumStock, int currentStock)
@@ -25,6 +26,19 @@ public partial class Inventory
         WarehouseId = new InvWarehouseId(warehouseId);
         MinimumStock = new InvMinimumStock(minimumStock);
         CurrentStock = new InvCurrentStock(currentStock);
+        
+        if(MinimumStock.MinimumStock == CurrentStock.CurrentStock)
+        {
+            Status = InvStatus.LimitedStock;
+        }
+        else if(CurrentStock.CurrentStock > MinimumStock.MinimumStock * 2)
+        {
+            Status = InvStatus.OverStock;
+        }
+        else
+        {
+            Status = InvStatus.InStock;
+        }
     }
     //Constructor por comandos
     public Inventory(CreateInventoryCommand command)
@@ -38,6 +52,19 @@ public partial class Inventory
         WarehouseId = new InvWarehouseId(command.WarehouseId);
         MinimumStock = new InvMinimumStock(command.MinimumStock);
         CurrentStock = new InvCurrentStock(command.CurrentStock);
+        
+        if(MinimumStock.MinimumStock == CurrentStock.CurrentStock)
+        {
+            Status = InvStatus.LimitedStock;
+        }
+        else if(CurrentStock.CurrentStock > MinimumStock.MinimumStock * 2)
+        {
+            Status = InvStatus.OverStock;
+        }
+        else
+        {
+            Status = InvStatus.InStock;
+        }
     }
     
     public void Update(UpdateInventoryCommand command)
@@ -51,6 +78,19 @@ public partial class Inventory
         WarehouseId = new InvWarehouseId(command.WarehouseId);
         MinimumStock = new InvMinimumStock(command.MinimumStock);
         CurrentStock = new InvCurrentStock(command.CurrentStock);
+        
+        if(MinimumStock.MinimumStock == CurrentStock.CurrentStock)
+        {
+            Status = InvStatus.LimitedStock;
+        }
+        else if(CurrentStock.CurrentStock > MinimumStock.MinimumStock * 2)
+        {
+            Status = InvStatus.OverStock;
+        }
+        else
+        {
+            Status = InvStatus.InStock;
+        }
     }
     
     public int Id { get; set; }
@@ -58,9 +98,11 @@ public partial class Inventory
     public InvWarehouseId WarehouseId { get; set; }
     public InvMinimumStock MinimumStock { get; set; }
     public InvCurrentStock CurrentStock { get; set; }
+    public InvStatus Status { get; set; }
     
     public int InventoryProductId => ProductId.ProductId;
     public int InventoryWarehouseId => WarehouseId.WarehouseId;
     public int InventoryMinimumStock => MinimumStock.MinimumStock;
     public int InventoryCurrentStock => CurrentStock.CurrentStock;
+    public string InventoryStatus => Status.ToString();
 }

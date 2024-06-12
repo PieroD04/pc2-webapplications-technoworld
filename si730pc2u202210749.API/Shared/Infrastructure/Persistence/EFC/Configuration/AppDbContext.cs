@@ -55,8 +55,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 c.WithOwner().HasForeignKey("id");
                 c.Property(u => u.CurrentStock).HasColumnName("CurrentStock");
             });
-        
 
+        builder.Entity<Inventory>().Property(i => i.Status).HasConversion<string>();
         
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();

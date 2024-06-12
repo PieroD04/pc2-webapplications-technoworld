@@ -2,4 +2,4 @@
 
 // Resource is a record with data of a resource and an ID
 //Upper Camel Case
-public record InventoryResource(int Id, int ProductId, int WarehouseId, int MinimumStock, int CurrentStock);
+public record InventoryResource(int Id, int ProductId, int WarehouseId, int MinimumStock, int CurrentStock, string Status);
