@@ -3,9 +3,17 @@ using si730pc2u202210749.API.Logistics.Domain.Model.ValueObjects;
 
 namespace si730pc2u202210749.API.Logistics.Domain.Model.Aggregates;
 
+/// <summary>
+/// Represents an inventory item in the logistics system.
+/// </summary>
+/// <remarks>
+/// Piero Delgado
+/// </remarks>
 public partial class Inventory
 {
-    //Constructor por defecto
+    /// <summary>
+    /// Default constructor for the Inventory class.
+    /// </summary>
     public Inventory()
     {
         ProductId = new InvProductId(0);
@@ -15,7 +23,14 @@ public partial class Inventory
         Type = InvType.Other;
         Status = InvStatus.LimitedStock;
     }
-    //Constructor por parametros
+    /// <summary>
+    /// Constructs an Inventory object with specified parameters.
+    /// </summary>
+    /// <param name="productId">The ID of the product.</param>
+    /// <param name="warehouseId">The ID of the warehouse.</param>
+    /// <param name="minimumStock">The minimum stock of the product.</param>
+    /// <param name="currentStock">The current stock of the product.</param>
+    /// <param name="type">The type of the inventory item.</param>
     public Inventory(int productId, int warehouseId, int minimumStock, int currentStock, string type)
     {
         if(currentStock < minimumStock)
@@ -39,7 +54,9 @@ public partial class Inventory
         
         UpdateStatus();
     }
-    //Constructor por comandos
+    /// <summary>
+    /// Constructs an Inventory object with the data of the create command.
+    /// </summary>
     public Inventory(CreateInventoryCommand command)
     {
         if(command.CurrentStock < command.MinimumStock)
@@ -64,6 +81,10 @@ public partial class Inventory
         UpdateStatus();
     }
     
+    /// <summary>
+    /// Updates the inventory item with the specified command.
+    /// </summary>
+    /// <param name="command">The command that has the data to update the inventory item.</param>
     public void Update(UpdateInventoryCommand command)
     {
         if(command.CurrentStock < command.MinimumStock)
@@ -88,6 +109,9 @@ public partial class Inventory
         UpdateStatus();
     }
     
+    /// <summary>
+    /// Updates the status of the inventory item based on the current stock and minimum stock.
+    /// </summary>
     private void UpdateStatus()
     {
         if(MinimumStock.MinimumStock == CurrentStock.CurrentStock)

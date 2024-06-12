@@ -9,6 +9,12 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace si730pc2u202210749.API.Logistics.Interfaces.REST;
 
+/// <summary>
+/// Represents a REST API controller for managing inventories.
+/// </summary>
+/// <param name="inventoryQueryService"></param>
+/// <param name="inventoryCommandService"></param>
+
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
