@@ -2,4 +2,4 @@
 
 //Create Resource is a record with data of a resource but without an ID
 //Upper Camel Case
-public record CreateInventoryResource(int ProductId, int WarehouseId, int MinimumStock, int CurrentStock);
+public record CreateInventoryResource(int ProductId, int WarehouseId, int MinimumStock, int CurrentStock, string Type);

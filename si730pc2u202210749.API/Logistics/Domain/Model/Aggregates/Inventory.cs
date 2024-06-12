@@ -12,10 +12,11 @@ public partial class Inventory
         WarehouseId = new InvWarehouseId(0);
         MinimumStock = new InvMinimumStock();
         CurrentStock = new InvCurrentStock();
+        Type = InvType.Other;
         Status = InvStatus.LimitedStock;
     }
     //Constructor por parametros
-    public Inventory(int productId, int warehouseId, int minimumStock, int currentStock)
+    public Inventory(int productId, int warehouseId, int minimumStock, int currentStock, string type)
     {
         if(currentStock < minimumStock)
         {
@@ -27,18 +28,16 @@ public partial class Inventory
         MinimumStock = new InvMinimumStock(minimumStock);
         CurrentStock = new InvCurrentStock(currentStock);
         
-        if(MinimumStock.MinimumStock == CurrentStock.CurrentStock)
+        try
         {
-            Status = InvStatus.LimitedStock;
+            Type = (InvType)Enum.Parse(typeof(InvType), type, true);
         }
-        else if(CurrentStock.CurrentStock > MinimumStock.MinimumStock * 2)
+        catch
         {
-            Status = InvStatus.OverStock;
+            throw new Exception("Invalid inventory type. Must be Food, Beverage, Medicine, Electronics, Clothing, Furniture, Other");
         }
-        else
-        {
-            Status = InvStatus.InStock;
-        }
+        
+        UpdateStatus();
     }
     //Constructor por comandos
     public Inventory(CreateInventoryCommand command)
@@ -53,18 +52,16 @@ public partial class Inventory
         MinimumStock = new InvMinimumStock(command.MinimumStock);
         CurrentStock = new InvCurrentStock(command.CurrentStock);
         
-        if(MinimumStock.MinimumStock == CurrentStock.CurrentStock)
+        try
         {
-            Status = InvStatus.LimitedStock;
+            Type = (InvType)Enum.Parse(typeof(InvType), command.Type, true);
         }
-        else if(CurrentStock.CurrentStock > MinimumStock.MinimumStock * 2)
+        catch
         {
-            Status = InvStatus.OverStock;
+            throw new Exception("Invalid inventory type. Must be Food, Beverage, Medicine, Electronics, Clothing, Furniture, Other");
         }
-        else
-        {
-            Status = InvStatus.InStock;
-        }
+        
+        UpdateStatus();
     }
     
     public void Update(UpdateInventoryCommand command)
@@ -79,6 +76,20 @@ public partial class Inventory
         MinimumStock = new InvMinimumStock(command.MinimumStock);
         CurrentStock = new InvCurrentStock(command.CurrentStock);
         
+        try
+        {
+            Type = (InvType)Enum.Parse(typeof(InvType), command.Type, true);
+        }
+        catch
+        {
+            throw new Exception("Invalid inventory type. Must be Food, Beverage, Medicine, Electronics, Clothing, Furniture, Other");
+        }
+        
+        UpdateStatus();
+    }
+    
+    private void UpdateStatus()
+    {
         if(MinimumStock.MinimumStock == CurrentStock.CurrentStock)
         {
             Status = InvStatus.LimitedStock;
@@ -99,10 +110,12 @@ public partial class Inventory
     public InvMinimumStock MinimumStock { get; set; }
     public InvCurrentStock CurrentStock { get; set; }
     public InvStatus Status { get; set; }
+    public InvType Type { get; set; }
     
     public int InventoryProductId => ProductId.ProductId;
     public int InventoryWarehouseId => WarehouseId.WarehouseId;
     public int InventoryMinimumStock => MinimumStock.MinimumStock;
     public int InventoryCurrentStock => CurrentStock.CurrentStock;
     public string InventoryStatus => Status.ToString();
+    public string InventoryType => Type.ToString();
 }

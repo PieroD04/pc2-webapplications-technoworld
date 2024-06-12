@@ -7,7 +7,7 @@ public static class UpdateInventoryCommandFromResourceAssembler
 {
     public static UpdateInventoryCommand ToCommandFromResource(int inventoryId, UpdateInventoryResource resource)
     {
-        return new UpdateInventoryCommand(inventoryId, resource.ProductId, resource.WarehouseId, resource.MinimumStock, resource.CurrentStock);
+        return new UpdateInventoryCommand(inventoryId, resource.ProductId, resource.WarehouseId, resource.MinimumStock, resource.CurrentStock, resource.Type);
     }
     
 }
